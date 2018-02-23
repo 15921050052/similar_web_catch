@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 import datetime
+import urlparse
+
 from pyexcel_xls import get_data
 
 from trivest_data.dal.trivest_spider import SimilarSrc
@@ -20,12 +22,7 @@ def read_xls_file():
                 info = u''
                 if len(page_data_item) >= 4:
                     info = page_data_item[3]
-                # search_word = plat_url.rstrip(u'/#/') \
-                #     .rstrip(u'/') \
-                #     .lstrip(u'https://www.')\
-                #     .lstrip(u'https://')\
-                #     .lstrip(u'http://www.
-                search_word = plat_url
+                search_word = urlparse.urlsplit(plat_url).netloc.replace(u'www.', u'')
                 hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
                 save(hash_code, area, plat_name, plat_url, search_word, update_time, info)
@@ -38,12 +35,8 @@ def read_xls_file():
                 info = u''
                 if len(page_data_item) >= 3:
                     info = page_data_item[2]
-                # search_word = plat_url.rstrip(u'/')\
-                #     .lstrip(u'https://www.')\
-                #     .lstrip(u'https://')\
-                #     .lstrip(u'http://www.')\
-                #     .lstrip(u'http://')
-                search_word = plat_url
+                search_word = urlparse.urlsplit(plat_url).netloc.replace(u'www.', u'')
+                # search_word = plat_url
                 hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
 
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
