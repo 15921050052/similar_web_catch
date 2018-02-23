@@ -1,49 +1,16 @@
 # -*- coding: utf-8 -*-
+import random
 import time
 
-from selenium import webdriver
-from selenium.common.exceptions import StaleElementReferenceException
+import requests
 
 from trivest_data.dal.trivest_spider import SimilarSrc
 from util import EncryptUtil
 from util import FileUtil
 
-
-def getPhantomJs():
-    service_args = [u'--load-images=no', u'--disk-cache=yes', u'--ignore-ssl-errors=true']
-    driver = webdriver.PhantomJS(service_args=service_args)
-    return driver
-
-
-def load(url):
-    print u'开始加载'
-
-    def wait_for_load(a_driver):
-        element = a_driver.find_element_by_tag_name(u'html')
-        count = 0
-        while True:
-            count += 1
-            # 超过5s，直接返回,看情况设置
-            if count > 5:
-                print(u'Timing out after 5s and returning')
-                return
-            print u'睡眠1s'
-            time.sleep(0.5)  # 检查还是不是同一个element，如果不是，说明这个html标签已经不再DOM中了。如果不是抛出异常
-            new = a_driver.find_element_by_tag_name(u'html')
-            if element != new:
-                raise StaleElementReferenceException(u'刚才重定向了！')
-
-    driver = getPhantomJs()
-    driver.get(url)
-    try:
-        wait_for_load(driver)
-    except StaleElementReferenceException as e:
-        print e.msg
-    finally:
-        return 200, u'成功', {
-            u'source_url': driver.current_url,
-            u'html': driver.page_source,
-        }
+USER_AGENTS = [
+    u'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.110 Safari/537.36'
+]
 
 
 def saveFile(hash_code, content):
@@ -51,16 +18,33 @@ def saveFile(hash_code, content):
         FileUtil.createDir(u'html')
     filename = u'html/%s.html' % hash_code
     with open(filename, u'wb') as f:
-        f.write(content.encode(u"utf8"))
+        f.write(content)
+        f.close()
+    print u'存储完成'
+
+
+def load(url):
+    headers = {
+        u'User-Agent': random.choice(USER_AGENTS)
+    }
+    result = requests.get(url, timeout=20, headers=headers)
+    result.encoding = u'utf-8'
+    # print result.content
+    return result.content
 
 
 if __name__ == '__main__':
-    page = 1
+    page = 4
+    is_running = False
     while True:
+        if is_running:
+            continue
+        is_running = True
+
         print u'当前第%s页面' % page
         src_list = SimilarSrc.select().paginate(page, 1)
-        if page == 2:
-            break
+        # if page == 3:
+        #     break
         if not len(src_list):
             print u'第%s页面end' % page
             break
@@ -71,7 +55,9 @@ if __name__ == '__main__':
             new_url = u'https://www.similarweb.com/website/%s' % search_word
             hash_code = EncryptUtil.md5(new_url)
             print new_url
-            code, msg, data = load(new_url)
-            html = data.get(u'html', u'')
+            html = load(new_url)
             saveFile(hash_code, html)
         page += 1
+        is_running = False
+        print u'睡一下'
+        time.sleep(20)

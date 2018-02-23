@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import os
 import time
 
 import scrapy
@@ -85,3 +86,9 @@ class BaseSpider(scrapy.Spider):
         with open(filename, u'wb') as f:
             f.write(content.encode(u"utf8"))
         self.log(u'Saved file %s' % filename)
+        self.logInfo(u'保存成功')
+
+    def checkFileExist(self, hash_code):
+        return os.path.exists(u'html/%s.html' % hash_code)
+
+

@@ -24,16 +24,16 @@ def detailBaseParse(spider, response):
 
 
 
-    content_item = {
-        u'hash_code': hash_code,
-        u'search_word': search_word,
-        u'src_id': src_id,
-        u'url': source_url,
-        u'info': info,
-        u'content': content
-    }
-
-    return content_item
+    # content_item = {
+    #     u'hash_code': hash_code,
+    #     u'search_word': search_word,
+    #     u'src_id': src_id,
+    #     u'url': source_url,
+    #     u'info': info,
+    #     u'content': content
+    # }
+    #
+    # return content_item
 
 
 if __name__ == '__main__':
