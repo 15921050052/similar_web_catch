@@ -3,6 +3,7 @@ import datetime
 from pyexcel_xls import get_data
 
 from trivest_data.dal.trivest_spider import SimilarSrc
+from util import EncryptUtil
 
 
 def read_xls_file():
@@ -25,8 +26,9 @@ def read_xls_file():
                 #     .lstrip(u'https://')\
                 #     .lstrip(u'http://www.
                 search_word = plat_url
+                hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
-                save(area, plat_name, plat_url, search_word, update_time, info)
+                save(hash_code, area, plat_name, plat_url, search_word, update_time, info)
         else:
             for page_data_item in page_data_list:
                 plat_name = page_data_item[0]
@@ -42,14 +44,17 @@ def read_xls_file():
                 #     .lstrip(u'http://www.')\
                 #     .lstrip(u'http://')
                 search_word = plat_url
+                hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
+
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
                 area = sheet_n
-                save(area, plat_name, plat_url, search_word, update_time, info)
+                save(hash_code, area, plat_name, plat_url, search_word, update_time, info)
 
 
-def save(area, plat_name, plat_url, search_word, update_time, info):
-    print area, plat_name, plat_url, search_word
+def save(hash_code, area, plat_name, plat_url, search_word, update_time, info):
+    print hash_code, area, plat_name, plat_url, search_word
     SimilarSrc.create(**{
+        u'hash_code': hash_code,
         u'area': area,
         u'plat_name': plat_name,
         u'plat_url': plat_url,

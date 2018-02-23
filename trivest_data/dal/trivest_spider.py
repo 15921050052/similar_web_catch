@@ -51,6 +51,7 @@ class SimilarSrc(BaseModel):
     info = CharField(null=True)
     update_time = DateTimeField(null=True)
     area = CharField(null=True)
+    hash_code = CharField(null=True)
 
     class Meta:
         db_table = 'similar_src'
