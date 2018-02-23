@@ -1,0 +1,7 @@
+scrapy
+apscheduler
+csscompressor
+demjson
+peewee
+PIL #图片处理
+selenium # 动态js
