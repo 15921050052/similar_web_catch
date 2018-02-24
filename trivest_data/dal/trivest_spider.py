@@ -97,14 +97,14 @@ class SimilarDetail(BaseModel):
     trf_country_5 = CharField(null=True)
     trf_country_5_value = CharField(null=True)
     trf_country_5_change = CharField(null=True)
-    # 第三部分 Traffic Sources
+    # 第四部分 Traffic Sources
     trf_source_direct = CharField(null=True)
     trf_source_referrals = CharField(null=True)
     trf_source_search = CharField(null=True)
     trf_source_social = CharField(null=True)
     trf_source_mail = CharField(null=True)
     trf_source_display = CharField(null=True)
-    # 第四部分 Referrals
+    # 第五部分 Referrals
     ref_of_trf_percent = CharField(null=True)
 
     ref_top_site_1 = CharField(null=True)
@@ -146,7 +146,7 @@ class SimilarDetail(BaseModel):
     ref_des_site_5 = CharField(null=True)
     ref_des_site_5_value = CharField(null=True)
     ref_des_site_5_change = CharField(null=True)
-    # 第五部分 Search
+    # 第六部分 Search
     sch_of_trf_percent = CharField(null=True)
 
     sch_organic_percent = CharField(null=True)
@@ -194,7 +194,7 @@ class SimilarDetail(BaseModel):
     sch_paid_keyword_5 = CharField(null=True)
     sch_paid_keyword_5_value = CharField(null=True)
     sch_paid_keyword_5_change = CharField(null=True)
-    # 第六部分 Social
+    # 第七部分 Social
     soc_of_trf_percent = CharField(null=True)
 
     soc_trf_1 = CharField(null=True)
@@ -211,7 +211,7 @@ class SimilarDetail(BaseModel):
 
     soc_trf_5 = CharField(null=True)
     soc_trf_5_value = CharField(null=True)
-    # 第七部分 Display Advertising
+    # 第八部分 Display Advertising
     ad_of_trf_percent = CharField(null=True)
 
     ad_top_publisher_1 = CharField(null=True)
@@ -219,7 +219,7 @@ class SimilarDetail(BaseModel):
     ad_top_publisher_3 = CharField(null=True)
     ad_top_publisher_4 = CharField(null=True)
     ad_top_publisher_5 = CharField(null=True)
-    # 第八部分 Website Content
+    # 第九部分 Website Content
     web_sub_domain_1 = CharField(null=True)
     web_sub_domain_1_value = CharField(null=True)
 
@@ -235,7 +235,7 @@ class SimilarDetail(BaseModel):
     web_sub_domain_5 = CharField(null=True)
     web_sub_domain_5_value = CharField(null=True)
 
-    # 第九部分 Audience Interests
+    # 第十部分 Audience Interests
     also_visit_web_1 = CharField(null=True)
     also_visit_web_2 = CharField(null=True)
     also_visit_web_3 = CharField(null=True)

@@ -89,4 +89,4 @@ if __name__ == '__main__':
         u'//span[@class="engagementInfo-value engagementInfo-value--large u-text-ellipsis"]'
         u'//span[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
 
-    print 'end'
+    print global_rank, country_rank, category_rank, trf_total_visits, trf_avg_visit_duration, trf_pages_per_visit, trf_bounce_rate

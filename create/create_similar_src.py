@@ -2,7 +2,7 @@
 import datetime
 import urlparse
 
-from pyexcel_xls import get_data
+from pyexcel_xls import get_data, save_data
 
 from trivest_data.dal.trivest_spider import SimilarSrc
 from util import EncryptUtil
