@@ -1,0 +1,61 @@
+[u'plat_name', u'plat_url', u'search_word'] \
++ [u'global_rank', u'country_rank', u'category_rank', u'trf_total_visits', u'trf_total_visits_change', u'trf_avg_visit_duration', u'trf_pages_per_visit', u'trf_bounce_rate'] \
+
++ [u'trf_country_1', u'trf_country_1_value', u'trf_country_1_change'] \
++ [u'trf_country_2', u'trf_country_2_value', u'trf_country_2_change'] \
++ [u'trf_country_3', u'trf_country_3_value', u'trf_country_3_change'] \
++ [u'trf_country_4', u'trf_country_4_value', u'trf_country_4_change'] \
++ [u'trf_country_5', u'trf_country_5_value', u'trf_country_5_change'] \
+
++ [u'trf_source_direct', u'trf_source_referrals', u'trf_source_search', u'trf_source_social', u'trf_source_mail', u'trf_source_display'] \
+
++ [u'ref_top_site_1', u'ref_top_site_1_value', u'ref_top_site_1_change'] \
++ [u'ref_top_site_2', u'ref_top_site_2_value', u'ref_top_site_2_change'] \
++ [u'ref_top_site_3', u'ref_top_site_3_value', u'ref_top_site_3_change'] \
++ [u'ref_top_site_4', u'ref_top_site_4_value', u'ref_top_site_4_change'] \
++ [u'ref_top_site_5', u'ref_top_site_5_value', u'ref_top_site_5_change'] \
+
++ [u'ref_des_site_1', u'ref_des_site_1_value', u'ref_des_site_1_change'] \
++ [u'ref_des_site_2', u'ref_des_site_2_value', u'ref_des_site_2_change'] \
++ [u'ref_des_site_3', u'ref_des_site_3_value', u'ref_des_site_3_change'] \
++ [u'ref_des_site_4', u'ref_des_site_4_value', u'ref_des_site_4_change'] \
++ [u'ref_des_site_5', u'ref_des_site_5_value', u'ref_des_site_5_change'] \
+
++ [u'sch_of_trf_percent', u'sch_organic_percent', u'sch_paid_percent'] \
++ [u'sch_organic_keyword_1', u'sch_organic_keyword_1_value', u'sch_organic_keyword_1_change'] \
++ [u'sch_organic_keyword_2', u'sch_organic_keyword_2_value', u'sch_organic_keyword_2_change'] \
++ [u'sch_organic_keyword_3', u'sch_organic_keyword_3_value', u'sch_organic_keyword_3_change'] \
++ [u'sch_organic_keyword_4', u'sch_organic_keyword_4_value', u'sch_organic_keyword_4_change'] \
++ [u'sch_organic_keyword_5', u'sch_organic_keyword_5_value', u'sch_organic_keyword_5_change'] \
+
++ [u'sch_paid_keyword_1', u'sch_paid_keyword_1_value', u'sch_paid_keyword_1_change'] \
++ [u'sch_paid_keyword_2', u'sch_paid_keyword_2_value', u'sch_paid_keyword_2_change'] \
++ [u'sch_paid_keyword_3', u'sch_paid_keyword_3_value', u'sch_paid_keyword_3_change'] \
++ [u'sch_paid_keyword_4', u'sch_paid_keyword_4_value', u'sch_paid_keyword_4_change'] \
++ [u'sch_paid_keyword_5', u'sch_paid_keyword_5_value', u'sch_paid_keyword_5_change'] \
+
++ [u'soc_of_trf_percent'] \
++ [u'soc_trf_1', u'soc_trf_1_value'] \
++ [u'soc_trf_2', u'soc_trf_2_value'] \
++ [u'soc_trf_3', u'soc_trf_3_value'] \
++ [u'soc_trf_4', u'soc_trf_4_value'] \
++ [u'soc_trf_5', u'soc_trf_5_value'] \
+
++ [u'ad_of_trf_percent'] \
++ [u'ad_top_publisher_1', u'ad_top_publisher_2', u'ad_top_publisher_3', u'ad_top_publisher_4', u'ad_top_publisher_5'] \
+
++ [u'web_sub_domain_1', u'web_sub_domain_1_value'] \
++ [u'web_sub_domain_2', u'web_sub_domain_2_value'] \
++ [u'web_sub_domain_3', u'web_sub_domain_3_value'] \
++ [u'web_sub_domain_4', u'web_sub_domain_4_value'] \
++ [u'web_sub_domain_5', u'web_sub_domain_5_value'] \
+
++ [u'also_visit_web_1', u'also_visit_web_2', u'also_visit_web_3', u'also_visit_web_4', u'also_visit_web_5'] \
+
+
+
+
+
+
+
+

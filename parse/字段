@@ -1,0 +1,60 @@
+[global_rank, country_rank, category_rank, trf_total_visits, trf_total_visits_change, trf_avg_visit_duration, trf_pages_per_visit, trf_bounce_rate]
+
+[trf_country_1, trf_country_1_value, trf_country_1_change]
+[trf_country_2, trf_country_2_value, trf_country_2_change]
+[trf_country_3, trf_country_3_value, trf_country_3_change]
+[trf_country_4, trf_country_4_value, trf_country_4_change]
+[trf_country_5, trf_country_5_value, trf_country_5_change]
+
+[trf_source_direct, trf_source_referrals, trf_source_search, trf_source_social, trf_source_mail, trf_source_display]
+
+[ref_top_site_1, ref_top_site_1_value, ref_top_site_1_change]
+[ref_top_site_2, ref_top_site_2_value, ref_top_site_2_change]
+[ref_top_site_3, ref_top_site_3_value, ref_top_site_3_change]
+[ref_top_site_4, ref_top_site_4_value, ref_top_site_4_change]
+[ref_top_site_5, ref_top_site_5_value, ref_top_site_5_change]
+
+[ref_des_site_1, ref_des_site_1_value, ref_des_site_1_change]
+[ref_des_site_2, ref_des_site_2_value, ref_des_site_2_change]
+[ref_des_site_3, ref_des_site_3_value, ref_des_site_3_change]
+[ref_des_site_4, ref_des_site_4_value, ref_des_site_4_change]
+[ref_des_site_5, ref_des_site_5_value, ref_des_site_5_change]
+
+[sch_of_trf_percent, sch_organic_percent, sch_paid_percent]
+[sch_organic_keyword_1, sch_organic_keyword_1_value, sch_organic_keyword_1_change]
+[sch_organic_keyword_2, sch_organic_keyword_2_value, sch_organic_keyword_2_change]
+[sch_organic_keyword_3, sch_organic_keyword_3_value, sch_organic_keyword_3_change]
+[sch_organic_keyword_4, sch_organic_keyword_4_value, sch_organic_keyword_4_change]
+[sch_organic_keyword_5, sch_organic_keyword_5_value, sch_organic_keyword_5_change]
+
+[sch_paid_keyword_1, sch_paid_keyword_1_value, sch_paid_keyword_1_change]
+[sch_paid_keyword_2, sch_paid_keyword_2_value, sch_paid_keyword_2_change]
+[sch_paid_keyword_3, sch_paid_keyword_3_value, sch_paid_keyword_3_change]
+[sch_paid_keyword_4, sch_paid_keyword_4_value, sch_paid_keyword_4_change]
+[sch_paid_keyword_5, sch_paid_keyword_5_value, sch_paid_keyword_5_change]
+
+[soc_of_trf_percent]
+[soc_trf_1, soc_trf_1_value]
+[soc_trf_2, soc_trf_2_value]
+[soc_trf_3, soc_trf_3_value]
+[soc_trf_4, soc_trf_4_value]
+[soc_trf_5, soc_trf_5_value]
+
+[ad_of_trf_percent]
+[ad_top_publisher_1, ad_top_publisher_2, ad_top_publisher_3, ad_top_publisher_4, ad_top_publisher_5]
+
+[web_sub_domain_1, web_sub_domain_1_value]
+[web_sub_domain_2, web_sub_domain_2_value]
+[web_sub_domain_3, web_sub_domain_3_value]
+[web_sub_domain_4, web_sub_domain_4_value]
+[web_sub_domain_5, web_sub_domain_5_value]
+
+[also_visit_web_1, also_visit_web_2, also_visit_web_3, also_visit_web_4, also_visit_web_5]
+
+
+
+
+
+
+
+

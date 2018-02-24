@@ -126,8 +126,10 @@ def parse(html, hash_code):
     for trf_country in trf_country_part:
         trf_country_index += 1
         trf_country_name = trf_country.xpath(u'.//*[contains(@class, "country-name")]/text()').extract_first(u'')
-        trf_country_value = trf_country.xpath(u'.//*[@class="traffic-share-valueNumber js-countValue"]/text()').extract_first(u'')
-        trf_country_change = trf_country.xpath(u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
+        trf_country_value = trf_country.xpath(
+            u'.//*[@class="traffic-share-valueNumber js-countValue"]/text()').extract_first(u'')
+        trf_country_change = trf_country.xpath(u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(
+            u'')
         if trf_country_index == 1:
             trf_country_1 = trf_country_name
             trf_country_1_value = trf_country_value
@@ -149,7 +151,7 @@ def parse(html, hash_code):
             trf_country_5_value = trf_country_value
             trf_country_5_change = trf_country_change
     print hash_code
-    print global_rank, country_rank, category_rank, trf_total_visits, trf_avg_visit_duration, trf_pages_per_visit, trf_bounce_rate
+    print global_rank, country_rank, category_rank, trf_total_visits, trf_total_visits_change, trf_avg_visit_duration, trf_pages_per_visit, trf_bounce_rate
 
     print trf_country_1, trf_country_2, trf_country_3, trf_country_4, trf_country_5
     print trf_country_1_value, trf_country_2_value, trf_country_3_value, trf_country_4_value, trf_country_5_value
@@ -212,7 +214,8 @@ def parse(html, hash_code):
         ref_top_site_index += 1
         ref_top_site_name = ref_top_site.xpath(u'.//*[@class="websitePage-listItemTitle"]/a/text()').extract_first(u'')
         ref_top_site_value = ref_top_site.xpath(u'.//*[@class="websitePage-trafficShare"]/text()').extract_first(u'')
-        ref_top_site_change = ref_top_site.xpath(u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
+        ref_top_site_change = ref_top_site.xpath(
+            u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
         if ref_top_site_index == 1:
             ref_top_site_1 = ref_top_site_name
             ref_top_site_1_value = ref_top_site_value
@@ -297,7 +300,7 @@ def parse(html, hash_code):
 
     sch_percent = response.xpath(u'//span[@class="searchPie-number"]/text()').extract()
     sch_organic_percent = l_i(len(sch_percent), sch_percent, 0, u'')
-    sch_paid_percent = l_i(len(sch_percent)>1, sch_percent, 1, u'')
+    sch_paid_percent = l_i(len(sch_percent) > 1, sch_percent, 1, u'')
 
     sch_organic_keyword_1 = u''
     sch_organic_keyword_1_value = u''
@@ -324,9 +327,12 @@ def parse(html, hash_code):
     sch_organic_keyword_index = 0
     for sch_organic_keyword in sch_organic_keyword_part:
         sch_organic_keyword_index += 1
-        sch_organic_keyword_name = sch_organic_keyword.xpath(u'.//*[@class="searchKeywords-words"]/text()').extract_first(u'')
-        sch_organic_keyword_value = sch_organic_keyword.xpath(u'.//*[@class="searchKeywords-trafficShare"]/text()').extract_first(u'')
-        sch_organic_keyword_change = sch_organic_keyword.xpath(u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
+        sch_organic_keyword_name = sch_organic_keyword.xpath(
+            u'.//*[@class="searchKeywords-words"]/text()').extract_first(u'')
+        sch_organic_keyword_value = sch_organic_keyword.xpath(
+            u'.//*[@class="searchKeywords-trafficShare"]/text()').extract_first(u'')
+        sch_organic_keyword_change = sch_organic_keyword.xpath(
+            u'.//*[@class="websitePage-relativeChangeNumber"]/text()').extract_first(u'')
         if sch_organic_keyword_index == 1:
             sch_organic_keyword_1 = sch_organic_keyword_name
             sch_organic_keyword_1_value = sch_organic_keyword_value
@@ -373,7 +379,8 @@ def parse(html, hash_code):
     sch_paid_keyword_5_value = u''
     sch_paid_keyword_5_change = u''
 
-    sch_paid_keyword_part = response.xpath(u'//div[@class="searchKeywords-text searchKeywords-text--right websitePage-mobileFramed"]//ul[@class="searchKeywords-list"]/li')
+    sch_paid_keyword_part = response.xpath(
+        u'//div[@class="searchKeywords-text searchKeywords-text--right websitePage-mobileFramed"]//ul[@class="searchKeywords-list"]/li')
     sch_paid_keyword_index = 0
     for sch_paid_keyword in sch_paid_keyword_part:
         sch_paid_keyword_index += 1
@@ -500,8 +507,10 @@ def parse(html, hash_code):
     web_sub_domain_index = 0
     for web_sub_domain in web_sub_domain_part:
         web_sub_domain_index += 1
-        web_sub_domain_name = web_sub_domain.xpath(u'.//span[@class="websiteContent-itemText"]/text()').extract_first(u'')
-        web_sub_domain_value = web_sub_domain.xpath(u'.//span[@class="websiteContent-itemPercentage js-value"]/text()').extract_first(u'')
+        web_sub_domain_name = web_sub_domain.xpath(u'.//span[@class="websiteContent-itemText"]/text()').extract_first(
+            u'')
+        web_sub_domain_value = web_sub_domain.xpath(
+            u'.//span[@class="websiteContent-itemPercentage js-value"]/text()').extract_first(u'')
         if web_sub_domain_index == 1:
             web_sub_domain_1 = web_sub_domain_name
             web_sub_domain_1_value = web_sub_domain_value
@@ -527,7 +536,8 @@ def parse(html, hash_code):
     also_visit_web_3 = u''
     also_visit_web_4 = u''
     also_visit_web_5 = u''
-    also_visit_web_part = response.xpath(u'//*[@data-waypoint="alsoVisited"]//*[@class="websitePage-listItemContainer"]')
+    also_visit_web_part = response.xpath(
+        u'//*[@data-waypoint="alsoVisited"]//*[@class="websitePage-listItemContainer"]')
     also_visit_web_index = 0
     for also_visit_web in also_visit_web_part:
         also_visit_web_index += 1
@@ -544,7 +554,7 @@ def parse(html, hash_code):
             also_visit_web_5 = also_visit_web_value
     print u'第十部分 Audience Interests'
     print also_visit_web_1, also_visit_web_2, also_visit_web_3, also_visit_web_4, also_visit_web_5
-    
+
     # 读取sql
     src_list = SimilarSrc.select().where(SimilarSrc.hash_code == hash_code)
     src = l_i(src_list, src_list, 0, None)
@@ -553,26 +563,103 @@ def parse(html, hash_code):
     plat_url = src.plat_url
     area = src.area
 
-    return area, [
-        plat_name,
-        plat_url,
-        search_word,
-        over_view_time,
-        global_rank,
-        country_rank,
-        category_rank,
-        trf_total_visits,
-        trf_avg_visit_duration,
-        trf_pages_per_visit,
-        trf_bounce_rate,
-        trf_total_visits_change
-    ]
+    all = [plat_name, plat_url, search_word] \
+          + [over_view_time, global_rank, country_rank, category_rank, trf_total_visits, trf_total_visits_change,
+             trf_avg_visit_duration, trf_pages_per_visit, trf_bounce_rate] \
+          + [trf_country_1, trf_country_1_value, trf_country_1_change] \
+          + [trf_country_2, trf_country_2_value, trf_country_2_change] \
+          + [trf_country_3, trf_country_3_value, trf_country_3_change] \
+          + [trf_country_4, trf_country_4_value, trf_country_4_change] \
+          + [trf_country_5, trf_country_5_value, trf_country_5_change] \
+          + [trf_source_direct, trf_source_referrals, trf_source_search, trf_source_social, trf_source_mail,
+             trf_source_display] \
+          + [ref_of_trf_percent, ref_top_site_1, ref_top_site_1_value, ref_top_site_1_change] \
+          + [ref_top_site_2, ref_top_site_2_value, ref_top_site_2_change] \
+          + [ref_top_site_3, ref_top_site_3_value, ref_top_site_3_change] \
+          + [ref_top_site_4, ref_top_site_4_value, ref_top_site_4_change] \
+          + [ref_top_site_5, ref_top_site_5_value, ref_top_site_5_change] \
+          + [ref_des_site_1, ref_des_site_1_value, ref_des_site_1_change] \
+          + [ref_des_site_2, ref_des_site_2_value, ref_des_site_2_change] \
+          + [ref_des_site_3, ref_des_site_3_value, ref_des_site_3_change] \
+          + [ref_des_site_4, ref_des_site_4_value, ref_des_site_4_change] \
+          + [ref_des_site_5, ref_des_site_5_value, ref_des_site_5_change] \
+          + [sch_of_trf_percent, sch_organic_percent, sch_paid_percent] \
+          + [sch_organic_keyword_1, sch_organic_keyword_1_value, sch_organic_keyword_1_change] \
+          + [sch_organic_keyword_2, sch_organic_keyword_2_value, sch_organic_keyword_2_change] \
+          + [sch_organic_keyword_3, sch_organic_keyword_3_value, sch_organic_keyword_3_change] \
+          + [sch_organic_keyword_4, sch_organic_keyword_4_value, sch_organic_keyword_4_change] \
+          + [sch_organic_keyword_5, sch_organic_keyword_5_value, sch_organic_keyword_5_change] \
+          + [sch_paid_keyword_1, sch_paid_keyword_1_value, sch_paid_keyword_1_change] \
+          + [sch_paid_keyword_2, sch_paid_keyword_2_value, sch_paid_keyword_2_change] \
+          + [sch_paid_keyword_3, sch_paid_keyword_3_value, sch_paid_keyword_3_change] \
+          + [sch_paid_keyword_4, sch_paid_keyword_4_value, sch_paid_keyword_4_change] \
+          + [sch_paid_keyword_5, sch_paid_keyword_5_value, sch_paid_keyword_5_change] \
+          + [soc_of_trf_percent] \
+          + [soc_trf_1, soc_trf_1_value] \
+          + [soc_trf_2, soc_trf_2_value] \
+          + [soc_trf_3, soc_trf_3_value] \
+          + [soc_trf_4, soc_trf_4_value] \
+          + [soc_trf_5, soc_trf_5_value] \
+          + [ad_of_trf_percent] \
+          + [ad_top_publisher_1, ad_top_publisher_2, ad_top_publisher_3, ad_top_publisher_4, ad_top_publisher_5] \
+          + [web_sub_domain_1, web_sub_domain_1_value] \
+          + [web_sub_domain_2, web_sub_domain_2_value] \
+          + [web_sub_domain_3, web_sub_domain_3_value] \
+          + [web_sub_domain_4, web_sub_domain_4_value] \
+          + [web_sub_domain_5, web_sub_domain_5_value] \
+          + [also_visit_web_1, also_visit_web_2, also_visit_web_3, also_visit_web_4, also_visit_web_5]
+    return area, all
 
 
 if __name__ == '__main__':
-    title_names = [u'plat_name', u'plat_url', u'search_word', u'over_view_time', u'global_rank', u'country_rank',
-                   u'category_rank', u'trf_total_visits', u'trf_avg_visit_duration', u'trf_pages_per_visit',
-                   u'trf_bounce_rate', u'trf_total_visits_change']
+    title_names = [u'plat_name', u'plat_url', u'search_word'] \
+                  + [u'over_view_time', u'global_rank', u'country_rank', u'category_rank', u'trf_total_visits',
+                     u'trf_total_visits_change', u'trf_avg_visit_duration', u'trf_pages_per_visit', u'trf_bounce_rate'] \
+                  + [u'trf_country_1', u'trf_country_1_value', u'trf_country_1_change'] \
+                  + [u'trf_country_2', u'trf_country_2_value', u'trf_country_2_change'] \
+                  + [u'trf_country_3', u'trf_country_3_value', u'trf_country_3_change'] \
+                  + [u'trf_country_4', u'trf_country_4_value', u'trf_country_4_change'] \
+                  + [u'trf_country_5', u'trf_country_5_value', u'trf_country_5_change'] \
+                  + [u'trf_source_direct', u'trf_source_referrals', u'trf_source_search', u'trf_source_social',
+                     u'trf_source_mail', u'trf_source_display'] \
+                  + [u'ref_of_trf_percent', u'ref_top_site_1', u'ref_top_site_1_value', u'ref_top_site_1_change'] \
+                  + [u'ref_top_site_2', u'ref_top_site_2_value', u'ref_top_site_2_change'] \
+                  + [u'ref_top_site_3', u'ref_top_site_3_value', u'ref_top_site_3_change'] \
+                  + [u'ref_top_site_4', u'ref_top_site_4_value', u'ref_top_site_4_change'] \
+                  + [u'ref_top_site_5', u'ref_top_site_5_value', u'ref_top_site_5_change'] \
+                  + [u'ref_des_site_1', u'ref_des_site_1_value', u'ref_des_site_1_change'] \
+                  + [u'ref_des_site_2', u'ref_des_site_2_value', u'ref_des_site_2_change'] \
+                  + [u'ref_des_site_3', u'ref_des_site_3_value', u'ref_des_site_3_change'] \
+                  + [u'ref_des_site_4', u'ref_des_site_4_value', u'ref_des_site_4_change'] \
+                  + [u'ref_des_site_5', u'ref_des_site_5_value', u'ref_des_site_5_change'] \
+                  + [u'sch_of_trf_percent', u'sch_organic_percent', u'sch_paid_percent'] \
+                  + [u'sch_organic_keyword_1', u'sch_organic_keyword_1_value', u'sch_organic_keyword_1_change'] \
+                  + [u'sch_organic_keyword_2', u'sch_organic_keyword_2_value', u'sch_organic_keyword_2_change'] \
+                  + [u'sch_organic_keyword_3', u'sch_organic_keyword_3_value', u'sch_organic_keyword_3_change'] \
+                  + [u'sch_organic_keyword_4', u'sch_organic_keyword_4_value', u'sch_organic_keyword_4_change'] \
+                  + [u'sch_organic_keyword_5', u'sch_organic_keyword_5_value', u'sch_organic_keyword_5_change'] \
+                  + [u'sch_paid_keyword_1', u'sch_paid_keyword_1_value', u'sch_paid_keyword_1_change'] \
+                  + [u'sch_paid_keyword_2', u'sch_paid_keyword_2_value', u'sch_paid_keyword_2_change'] \
+                  + [u'sch_paid_keyword_3', u'sch_paid_keyword_3_value', u'sch_paid_keyword_3_change'] \
+                  + [u'sch_paid_keyword_4', u'sch_paid_keyword_4_value', u'sch_paid_keyword_4_change'] \
+                  + [u'sch_paid_keyword_5', u'sch_paid_keyword_5_value', u'sch_paid_keyword_5_change'] \
+                  + [u'soc_of_trf_percent'] \
+                  + [u'soc_trf_1', u'soc_trf_1_value'] \
+                  + [u'soc_trf_2', u'soc_trf_2_value'] \
+                  + [u'soc_trf_3', u'soc_trf_3_value'] \
+                  + [u'soc_trf_4', u'soc_trf_4_value'] \
+                  + [u'soc_trf_5', u'soc_trf_5_value'] \
+                  + [u'ad_of_trf_percent'] \
+                  + [u'ad_top_publisher_1', u'ad_top_publisher_2', u'ad_top_publisher_3', u'ad_top_publisher_4',
+                     u'ad_top_publisher_5'] \
+                  + [u'web_sub_domain_1', u'web_sub_domain_1_value'] \
+                  + [u'web_sub_domain_2', u'web_sub_domain_2_value'] \
+                  + [u'web_sub_domain_3', u'web_sub_domain_3_value'] \
+                  + [u'web_sub_domain_4', u'web_sub_domain_4_value'] \
+                  + [u'web_sub_domain_5', u'web_sub_domain_5_value'] \
+                  + [u'also_visit_web_1', u'also_visit_web_2', u'also_visit_web_3', u'also_visit_web_4',
+                     u'also_visit_web_5']
+
     data_obj = {}
 
     path_list = get_all_file_path(u'C:\\gsma\\pythonWorkSpace\\componey\\similar_web_catch\\parse\\html')
@@ -598,6 +685,6 @@ if __name__ == '__main__':
     data_list = []
     for key in data_obj:
         data_list.append(data_obj[key])
-        # print data_obj[key]
+        print data_obj[key]
 
-    # save_xls_file(data_list)
+        save_xls_file(data_list)
