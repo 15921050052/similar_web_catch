@@ -51,6 +51,8 @@ class SimilarWebSpider(BaseSpider):
         last = loop_cache.get(u'last', {})
         new = loop_cache.get(u'new', {})
         status = new.get(u'status', u'')
+        time_start = new.get(u'time_start', u'')
+        time_complete = new.get(u'time_complete', u'')
         if not status:
             # 说明需要重新抓取，存取的路径为dir_str
             new = {
@@ -63,6 +65,14 @@ class SimilarWebSpider(BaseSpider):
             if status == u'complete':
                 if not is_monday:
                     # 完成状态下，不是周一，就直接退出不抓
+                    self.logInfo(u'已经完成抓取，但不是周一，不抓取')
+                    return
+                # 完成抓取的时间
+                curr_time = datetime.datetime.now()
+                time_complete = datetime.datetime.strptime(time_complete, u'%Y-%m-%d %H:%M:%S')
+                space_day = (time_complete - curr_time).days
+                if space_day < 1:
+                    # 小于1天，说明周一刚抓完
                     return
                 # 如果是完成状态，且是周一 说明需要重新抓取
                 last = new
@@ -72,6 +82,7 @@ class SimilarWebSpider(BaseSpider):
                     u'time_start': curr_time_str,
                     u'time_complete': u''
                 }
+                self.logInfo(u'已经完成抓取，但不是周一')
         # 存入状态数据
         loop_cache = {
             u'last': last,
