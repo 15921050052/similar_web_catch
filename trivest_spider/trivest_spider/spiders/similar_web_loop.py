@@ -139,6 +139,7 @@ class SimilarWebSpider(BaseSpider):
             new[u'time_complete'] = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
             loop_cache[u'new'] = new
             self.saveLoopCacheFile(loop_cache)
+            self.logInfo(u'一轮全部完成抓取')
 
     def parseDetail(self, response):
         self.logInfo(u'抓取返回')
