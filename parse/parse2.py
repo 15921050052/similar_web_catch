@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os
 
-import datetime
 from pyexcel_xls import save_data
 from scrapy import Selector
 
@@ -58,7 +57,7 @@ def l_i(condition, list, yes_index, no):
         return no
 
 
-def save_xls_file(sheet_list, save_dir):
+def save_xls_file(sheet_list):
     from collections import OrderedDict
     data = OrderedDict()
 
@@ -70,7 +69,7 @@ def save_xls_file(sheet_list, save_dir):
         data.update({sheet_name: rows})
 
     # 保存成xls文件
-    save_data(u'result/%s.xls' % save_dir, data)
+    save_data(u"result.xls", data)
 
 
 def parse(html, hash_code):
@@ -609,48 +608,10 @@ def parse(html, hash_code):
           + [web_sub_domain_4, web_sub_domain_4_value] \
           + [web_sub_domain_5, web_sub_domain_5_value] \
           + [also_visit_web_1, also_visit_web_2, also_visit_web_3, also_visit_web_4, also_visit_web_5]
-    return area, hash_code, all
+    return area, all
 
 
-def start_before():
-    # 得到状态，存储地址
-    loop_cache = {
-        u'last': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        },
-        u'new': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        }
-    }
-    is_monday = datetime.datetime.now().weekday() == 0
-
-    last = loop_cache.get(u'last', {})
-    new = loop_cache.get(u'new', {})
-    status_last = last.get(u'status', u'')
-    status_new = new.get(u'status', u'')
-    # 周一
-    if not is_monday:
-        return
-
-    if status_new == u'complete':
-        # 说明需要解析
-        dir = new.get(u'dir', u'')
-    else:
-        if status_last == u'complete':
-            dir = last.get(u'dir', u'')
-        else:
-            return
-    # 获取dir下面的所有html
-    start(u'C:\\gsma\\pythonWorkSpace\\componey\\similar_web_catch\\trivest_spider\\html\\' + dir, dir)
-
-
-def start(html_path, save_dir):
+if __name__ == '__main__':
     title_names = [u'plat_name', u'plat_url', u'search_word'] \
                   + [u'over_view_time', u'global_rank', u'country_rank', u'category_rank', u'trf_total_visits',
                      u'trf_total_visits_change', u'trf_avg_visit_duration', u'trf_pages_per_visit', u'trf_bounce_rate'] \
@@ -701,12 +662,12 @@ def start(html_path, save_dir):
 
     data_obj = {}
 
-    path_list = get_all_file_path(html_path)
+    path_list = get_all_file_path(u'C:\\gsma\\pythonWorkSpace\\componey\\similar_web_catch\\parse\\html')
     for path in path_list:
         file_path = path[0]
         file_name = path[1]
         file_name_all = path[2]
-        area, hash_code, data_detail = parse_before(file_path, file_name)
+        area, data_detail = parse_before(file_path, file_name)
 
         data_item = data_obj.get(area, {
             u'sheet_name': area,
@@ -720,14 +681,10 @@ def start(html_path, save_dir):
         rows.append(data_detail)
         data_item[u'rows'] = rows
         data_obj[area] = data_item
-    # 之后批量插入
+
     data_list = []
     for key in data_obj:
         data_list.append(data_obj[key])
         print data_obj[key]
 
-        save_xls_file(data_list, save_dir)
-
-
-if __name__ == '__main__':
-    start_before()
+        save_xls_file(data_list)
