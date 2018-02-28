@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
+import datetime
 import os
 import time
-import datetime
+
 import scrapy
 from scrapy.exceptions import CloseSpider
 
@@ -13,7 +14,7 @@ from util import NetworkUtil
 
 class SimilarWebSpider(BaseSpider):
     """
-    similarWeb抓取
+    similarWeb 循环抓取
     """
     name = u'similar_web_loop'
     handle_httpstatus_list = [204, 206, 301, 400, 403, 404, 405, 500]
@@ -93,6 +94,7 @@ class SimilarWebSpider(BaseSpider):
         src_list = SimilarSrc.select().paginate(self.page, 300)
         if not len(src_list):
             print u'第%s页面end' % self.page
+        has_req = False
         for src in src_list:
             plat_name = src.plat_name
             search_word = src.search_word
@@ -100,10 +102,10 @@ class SimilarWebSpider(BaseSpider):
             new_url = u'https://www.similarweb.com/website/%s' % search_word
             hash_code = self.checkDao.getHashCode(new_url)
 
-            if self.checkFileExist(hash_code):
+            if os.path.exists(u'html/%s/%s.html' % (new.get(u'dir', ''), hash_code)):
                 self.logInfo(u'文章已经存在：' + new_url)
                 continue
-
+            has_req = True
             self.logInfo(u"开始抓取详情：" + new_url)
             yield scrapy.Request(url=new_url,
                                  meta={
@@ -117,7 +119,26 @@ class SimilarWebSpider(BaseSpider):
                                      u'loop_cache': loop_cache
                                  },
                                  callback=self.parseDetail, dont_filter=True)
-        self.page += 1
+
+        # 全部走完之后, 没有进行请求的，都要判断一下文件
+        not has_req and self.checkAllSave(new, src_list, loop_cache)
+
+    def checkAllSave(self, new, src_list, loop_cache):
+        # 存储成功之后，判断所有文件是否下载全
+        file_name_list = self.get_all_file_name(u'html/%s/' % (new.get(u'dir', u''),))
+
+        all_save = True
+        for src in src_list:
+            hash_code = src.hash_code
+            if hash_code not in file_name_list:
+                all_save = False
+                break
+        if all_save:
+            # 如果全部下载完成了，更新new为complete
+            new[u'status'] = u'complete'
+            new[u'time_complete'] = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
+            loop_cache[u'new'] = new
+            self.saveLoopCacheFile(loop_cache)
 
     def parseDetail(self, response):
         self.logInfo(u'抓取返回')
@@ -132,20 +153,6 @@ class SimilarWebSpider(BaseSpider):
         hash_code = response.meta[u'hash_code']
         self.saveHtmlFile(new.get(u'dir', u''), hash_code, response.body)
 
-        # 存储成功之后，判断所有文件是否下载全
-        file_name_list = self.get_all_file_name(u'html/%s/%s.html' % (new.get(u'dir', u''), hash_code))
-
-        all_save = True
-        for src in src_list:
-            hash_code = src.hash_code
-            if hash_code not in file_name_list:
-                all_save = False
-                break
-        if all_save:
-            # 如果全部下载完成了，更新new为complete
-            new[u'status'] = u'complete'
-            new[u'time_complete'] = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
-            loop_cache[u'new'] = new
-            self.saveLoopCacheFile(loop_cache)
+        self.checkAllSave(new, src_list, loop_cache)
         self.is_running = False
         time.sleep(10)

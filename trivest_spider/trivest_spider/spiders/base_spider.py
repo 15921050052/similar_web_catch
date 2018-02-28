@@ -96,8 +96,8 @@ class BaseSpider(scrapy.Spider):
     def saveHtmlFile(self, dir, hash_code, content):
         f = None
         try:
-            if not FileUtil.dirIsExist(u'html'):
-                FileUtil.createDir(u'html')
+            if not FileUtil.dirIsExist(u'html/%s' % dir):
+                FileUtil.createDir(u'html/%s' % dir)
             filename = u'html/%s/%s.html' % (dir, hash_code)
             with open(filename, u'wb') as f:
                 f.write(content.encode(u"utf8"))

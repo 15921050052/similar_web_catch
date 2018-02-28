@@ -34,7 +34,7 @@ def startSpider(spiderName):
 
 
 def similar_web():
-    startSpider('similar_web')
+    startSpider('similar_web_loop')
 
 
 def start():

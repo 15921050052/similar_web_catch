@@ -9,6 +9,12 @@ spiderDetails = {
         u'table_name_zh': u'SimilarWeb详情',
         u'spider_name': u'similar_web',
         u'spider_name_zh': u'SimilarWeb详情'
+    },
+    u'similar_web_loop': {
+        u'table_name': u'similar_detail',
+        u'table_name_zh': u'SimilarWeb详情',
+        u'spider_name': u'similar_web_loop',
+        u'spider_name_zh': u'SimilarWeb 循环抓取'
     }
 }
 
