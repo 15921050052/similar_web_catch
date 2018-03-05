@@ -7,7 +7,7 @@ from scrapy import cmdline
 # logger.setLevel(logging.DEBUG)
 # logger.addHandler(logging.StreamHandler())
 
-spiderName = u'similar_web'
+spiderName = u'similar_web_loop'
 
 
 cmdline.execute((u'scrapy crawl ' + spiderName + u' -s HTTPCACHE_ENABLED=0  ').split())

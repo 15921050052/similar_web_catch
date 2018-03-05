@@ -109,13 +109,13 @@ class BaseSpider(scrapy.Spider):
     def saveLoopCacheFile(self, loop_cache):
         f = None
         try:
-            if not FileUtil.dirIsExist(u'status'):
-                FileUtil.createDir(u'status')
-            filename = u'status/loop_cache.json'
-            with open(filename, u'wb') as f:
+            if not FileUtil.dirIsExist(u'cache'):
+                FileUtil.createDir(u'cache')
+            filename = u'cache/loop_cache.json'
+            with open(filename, u'w') as f:
                 json.dump(loop_cache, f)
             self.log(u'Saved file %s' % filename)
-            self.logInfo(u'保存成功')
+            self.logInfo(u'保存loop_cache.json成功')
         finally:
             f and f.close()
 
@@ -136,9 +136,12 @@ class BaseSpider(scrapy.Spider):
             }
         }
         try:
-            if os.path.exists(u'status/loop_cache.json'):
-                with open(u'status/loop_cache.json', u'r') as f:
-                    loop_cache = json.load(f)
+            self.logInfo(str(os.path.exists(u'cache/loop_cache.json')))
+            with open(u'cache/loop_cache.json', u'r') as f:
+                loop_cache = json.load(f)
+                self.logInfo(str(loop_cache))
+        except Exception, e:
+            self.logInfo(u''+e.message)
         finally:
             f and f.close()
         return loop_cache

@@ -48,12 +48,14 @@ class SimilarWebSpider(BaseSpider):
         dir_str = datetime.datetime.now().strftime(u'%Y_%m_%d_%H_%M_%S')
         curr_time_str = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
         is_monday = datetime.datetime.now().weekday() == 0
+        is_tuesday = datetime.datetime.now().weekday() == 1
 
         last = loop_cache.get(u'last', {})
         new = loop_cache.get(u'new', {})
         status = new.get(u'status', u'')
         time_start = new.get(u'time_start', u'')
         time_complete = new.get(u'time_complete', u'')
+        self.logInfo(u'status：%s' % (status, ))
         if not status:
             # 说明需要重新抓取，存取的路径为dir_str
             new = {
@@ -62,20 +64,23 @@ class SimilarWebSpider(BaseSpider):
                 u'time_start': curr_time_str,
                 u'time_complete': u''
             }
+            self.logInfo(u'不存在状态，新建')
         else:
             if status == u'complete':
-                if not is_monday:
-                    # 完成状态下，不是周一，就直接退出不抓
-                    self.logInfo(u'已经完成抓取，但不是周一，不抓取')
+                self.logInfo(u'is_monday：%s，is_tuesday：%s' % (is_monday, is_tuesday))
+                if not is_monday and not is_tuesday:
+                    # 完成状态下，不是周一，周二，就直接退出不抓
+                    self.logInfo(u'不是周一周二，不抓取')
                     return
                 # 完成抓取的时间
                 curr_time = datetime.datetime.now()
                 time_complete = datetime.datetime.strptime(time_complete, u'%Y-%m-%d %H:%M:%S')
-                space_day = (time_complete - curr_time).days
-                if space_day < 1:
-                    # 小于1天，说明周一刚抓完
+                space_day = (curr_time - time_complete).days
+                if space_day <= 1:
+                    # 小于等于1天，说明周一刚抓完
+                    self.logInfo(u'小于等于1天，说明周一刚抓完')
                     return
-                # 如果是完成状态，且是周一 说明需要重新抓取
+                # 如果是完成状态，且是周一 周二 说明需要重新抓取
                 last = new
                 new = {
                     u'status': u'loading',
@@ -83,17 +88,13 @@ class SimilarWebSpider(BaseSpider):
                     u'time_start': curr_time_str,
                     u'time_complete': u''
                 }
-                self.logInfo(u'已经完成抓取，但不是周一')
         # 存入状态数据
         loop_cache = {
             u'last': last,
             u'new': new
         }
         self.saveLoopCacheFile(loop_cache)
-        print u'第%s页面' % self.page
         src_list = SimilarSrc.select().paginate(self.page, 300)
-        if not len(src_list):
-            print u'第%s页面end' % self.page
         has_req = False
         for src in src_list:
             plat_name = src.plat_name

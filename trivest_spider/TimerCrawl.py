@@ -18,11 +18,6 @@ logging.basicConfig()
 
 
 def startSpider(spiderName):
-    heartBeatTimeSpace = 10*60
-    if spiderName == 'weixin_source':
-        heartBeatTimeSpace = 1*60*60
-    elif spiderName == 'weixin_public_article':
-        heartBeatTimeSpace = 3*60*60
     print '执行', spiderName
     # return
     if getSpiderStatus(spiderName) != 'running':
