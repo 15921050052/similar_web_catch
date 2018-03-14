@@ -5,8 +5,9 @@ import subprocess
 
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from apscheduler.schedulers.blocking import BlockingScheduler
+
+from parse_html.start_parse import start_parse_before
 from status_cache import clear_all_status, get_spider_status
-from global_config import get_spider_detail, project_identify
 
 import logging
 
@@ -18,7 +19,7 @@ logging.basicConfig()
 
 
 def start_spider(spider_name):
-    print '执行', spider_name
+    print u'执行', spider_name
     # return
     if get_spider_status(spider_name) != 'running':
         command = "scrapy crawl " + spider_name
@@ -30,6 +31,11 @@ def start_spider(spider_name):
 
 def similar_web():
     start_spider('similar_web_loop')
+
+
+def start_parse_html():
+    print u'周三，开始解析html'
+    start_parse_before()
 
 
 def start():
@@ -47,6 +53,9 @@ def start():
                           next_run_time=datetime.datetime.now() + datetime.timedelta(seconds=delaySeconds),
                           start_date=datetime.datetime.now() + datetime.timedelta(seconds=timeSpace), max_instances=1)
 
+    def add_week_day_job(func):
+        scheduler.add_job(func, 'cron', day_of_week='wed')
+
     timeSpace = 1 * 60
     # executors不设置，就会出现只能默认有5个线程
     executors = {
@@ -55,7 +64,7 @@ def start():
     }
     scheduler = BlockingScheduler(daemonic=False, executors=executors)
     add_job(similar_web, timeSpace)
-
+    add_week_day_job(start_parse_html)
     scheduler.start()
 
 

@@ -1,70 +1,9 @@
 # -*- coding: utf-8 -*-
-import json
-import os
-
-import datetime
-from pyexcel_xls import save_data
 from scrapy import Selector
-
 from trivest_data.dal.trivest_spider import SimilarSrc
-
-
-def get_all_file_path(path):
-    path_list = []
-    for file in os.listdir(path):
-        file_path = os.path.join(path, file)
-        # print ''.join(os.path.splitext(file))
-        file_name = os.path.splitext(file)[0]
-        file_name_all = ''.join(os.path.splitext(file))
-        if os.path.isdir(file_path):
-            get_all_file_path(file_path)
-        else:
-            path_list.append([file_path, file_name, file_name_all])
-    return path_list
-
-
-def i_e(condition, yes, no):
-    if condition:
-        return yes
-    else:
-        return no
-
-
-def check(spiderName):
-    # 判断当前文件是否存在，不存在，则新建
-    fileName = spiderName + '.json'
-    filePath = os.path.join(os.path.dirname(__file__) + '/status/')
-
-    if not os.path.exists(filePath):
-        os.mkdir(filePath)
-
-    return filePath + fileName
-
-
-def getLoopCache():
-    f = None
-    loop_cache = {
-        u'last': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        },
-        u'new': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        }
-    }
-    try:
-        with open(u'cache/loop_cache.json', u'r') as f:
-            loop_cache = json.load(f)
-    except Exception, e:
-        print str(e)
-    finally:
-        f and f.close()
-    return loop_cache
+from util import e_code
+from util import file_util
+from util import xls_util
 
 
 def parse_before(file_path, hash_code):
@@ -76,28 +15,6 @@ def parse_before(file_path, hash_code):
     finally:
         load_f and load_f.close()
     return result
-
-
-def l_i(condition, list, yes_index, no):
-    if condition:
-        return list[yes_index]
-    else:
-        return no
-
-
-def save_xls_file(sheet_list, save_dir):
-    from collections import OrderedDict
-    data = OrderedDict()
-
-    for sheet in sheet_list:
-        sheet_name = sheet[u'sheet_name']
-        rows = sheet[u'rows']
-
-        # 添加sheet表
-        data.update({sheet_name: rows})
-
-    # 保存成xls文件
-    save_data(u'result/%s.xls' % save_dir, data)
 
 
 def parse(html, hash_code):
@@ -112,17 +29,17 @@ def parse(html, hash_code):
     rank_list = u''.join(
         response.xpath(u'//div[@class="websiteRanks-valueContainer js-websiteRanksValue"]/text()').extract()).split()
 
-    global_rank = l_i(len(rank_list), rank_list, 0, u'')
-    country_rank = l_i(len(rank_list) > 1, rank_list, 1, u'')
-    category_rank = l_i(len(rank_list) > 2, rank_list, 2, u'')
+    global_rank = e_code.l_i(len(rank_list), rank_list, 0, u'')
+    country_rank = e_code.l_i(len(rank_list) > 1, rank_list, 1, u'')
+    category_rank = e_code.l_i(len(rank_list) > 2, rank_list, 2, u'')
 
     # 第二部分 https://www.similarweb.com/website/bitcoin.co.id
     second_part = response.xpath(u'//span[@class="engagementInfo-valueNumber js-countValue"]/text()').extract()
 
-    trf_total_visits = l_i(len(second_part), second_part, 0, u'')
-    trf_avg_visit_duration = l_i(len(second_part) > 1, second_part, 1, u'')
-    trf_pages_per_visit = l_i(len(second_part) > 2, second_part, 2, u'')
-    trf_bounce_rate = l_i(len(second_part) > 3, second_part, 3, u'')
+    trf_total_visits = e_code.l_i(len(second_part), second_part, 0, u'')
+    trf_avg_visit_duration = e_code.l_i(len(second_part) > 1, second_part, 1, u'')
+    trf_pages_per_visit = e_code.l_i(len(second_part) > 2, second_part, 2, u'')
+    trf_bounce_rate = e_code.l_i(len(second_part) > 3, second_part, 3, u'')
 
     trf_total_visits_change = response.xpath(
         u'//span[@class="engagementInfo-value engagementInfo-value--large u-text-ellipsis"]'
@@ -327,8 +244,8 @@ def parse(html, hash_code):
     sch_of_trf_percent = response.xpath(u'//span[@class="subheading-value searchText"]/text()').extract_first(u'')
 
     sch_percent = response.xpath(u'//span[@class="searchPie-number"]/text()').extract()
-    sch_organic_percent = l_i(len(sch_percent), sch_percent, 0, u'')
-    sch_paid_percent = l_i(len(sch_percent) > 1, sch_percent, 1, u'')
+    sch_organic_percent = e_code.l_i(len(sch_percent), sch_percent, 0, u'')
+    sch_paid_percent = e_code.l_i(len(sch_percent) > 1, sch_percent, 1, u'')
 
     sch_organic_keyword_1 = u''
     sch_organic_keyword_1_value = u''
@@ -585,7 +502,7 @@ def parse(html, hash_code):
 
     # 读取sql
     src_list = SimilarSrc.select().where(SimilarSrc.hash_code == hash_code)
-    src = l_i(src_list, src_list, 0, None)
+    src = e_code.l_i(src_list, src_list, 0, None)
     plat_name = src.plat_name
     search_word = src.search_word
     plat_url = src.plat_url
@@ -639,27 +556,6 @@ def parse(html, hash_code):
     return area, hash_code, all
 
 
-def start_before():
-    # 得到状态，存储地址
-    loop_cache = getLoopCache()
-
-    last = loop_cache.get(u'last', {})
-    new = loop_cache.get(u'new', {})
-    status_last = last.get(u'status', u'')
-    status_new = new.get(u'status', u'')
-
-    if status_new == u'complete':
-        # 说明需要解析
-        dir = new.get(u'dir', u'')
-    else:
-        if status_last == u'complete':
-            dir = last.get(u'dir', u'')
-        else:
-            return
-    # 获取dir下面的所有html
-    start(u'C:\\gsma\\pythonWorkSpace\\componey\\similar_web_catch\\trivest_spider\\html\\' + dir, dir)
-
-
 def start(html_path, save_dir):
     title_names = [u'plat_name', u'plat_url', u'search_word'] \
                   + [u'over_view_time', u'global_rank', u'country_rank', u'category_rank', u'trf_total_visits',
@@ -711,7 +607,7 @@ def start(html_path, save_dir):
 
     data_obj = {}
 
-    path_list = get_all_file_path(html_path)
+    path_list = file_util.get_all_file_path(html_path)
     for path in path_list:
         file_path = path[0]
         file_name = path[1]
@@ -736,8 +632,8 @@ def start(html_path, save_dir):
         data_list.append(data_obj[key])
         print data_obj[key]
 
-        save_xls_file(data_list, save_dir)
+        xls_util.save_xls_file(data_list, save_dir)
 
 
 if __name__ == '__main__':
-    start_before()
+    pass

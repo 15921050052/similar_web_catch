@@ -63,7 +63,6 @@ class BaseSpider(scrapy.Spider):
             self.log_warn(u'Saved file %s fail' % data)
 
     def get_loop_cache(self):
-        f = None
         loop_cache = {
             u'last': {
                 u'status': u'',
