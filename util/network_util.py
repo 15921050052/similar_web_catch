@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 import urllib
+import webbrowser
 
 
-def openWebbrowser(url):
+def open_web_browser(url):
     """
     打开浏览器
     :param url:
     :return:
     """
-    pass
-    # webbrowser.open(url)
+    webbrowser.open(url)
 
 
-def checkNetWork():
+def check_net_work():
     """
         检测网络
     :return:boolean
@@ -24,7 +24,7 @@ def checkNetWork():
         return False
 
 
-def checkService():
+def check_service():
     """
         检测服务器
     :return:boolean
@@ -32,7 +32,7 @@ def checkService():
     return True
 
 
-def getNewIp():
+def get_new_ip():
     """
     重新获取IP
     :return:

@@ -5,7 +5,7 @@ import urlparse
 from pyexcel_xls import get_data, save_data
 
 from trivest_data.dal.trivest_spider import SimilarSrc
-from util import EncryptUtil
+from util import encrypt_util
 
 
 def read_xls_file():
@@ -23,7 +23,7 @@ def read_xls_file():
                 if len(page_data_item) >= 4:
                     info = page_data_item[3]
                 search_word = urlparse.urlsplit(plat_url).netloc.replace(u'www.', u'')
-                hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
+                hash_code = encrypt_util.md5(u'https://www.similarweb.com/website/%s' % search_word)
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
                 save(hash_code, area, plat_name, plat_url, search_word, update_time, info)
         else:
@@ -37,7 +37,7 @@ def read_xls_file():
                     info = page_data_item[2]
                 search_word = urlparse.urlsplit(plat_url).netloc.replace(u'www.', u'')
                 # search_word = plat_url
-                hash_code = EncryptUtil.md5(u'https://www.similarweb.com/website/%s' % search_word)
+                hash_code = encrypt_util.md5(u'https://www.similarweb.com/website/%s' % search_word)
 
                 update_time = datetime.datetime.now().strftime(u'%Y-%m-%d %H:%M:%S')
                 area = sheet_n

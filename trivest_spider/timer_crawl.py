@@ -5,8 +5,8 @@ import subprocess
 
 from apscheduler.executors.pool import ThreadPoolExecutor, ProcessPoolExecutor
 from apscheduler.schedulers.blocking import BlockingScheduler
-from StatusCache import clearAllStatus, getSpiderStatus
-from GlobleConfig import getSpiderDetail, projectIdentify
+from status_cache import clear_all_status, get_spider_status
+from global_config import get_spider_detail, project_identify
 
 import logging
 
@@ -17,24 +17,24 @@ import logging
 logging.basicConfig()
 
 
-def startSpider(spiderName):
-    print '执行', spiderName
+def start_spider(spider_name):
+    print '执行', spider_name
     # return
-    if getSpiderStatus(spiderName) != 'running':
-        command = "scrapy crawl " + spiderName
+    if get_spider_status(spider_name) != 'running':
+        command = "scrapy crawl " + spider_name
         out_bytes = subprocess.check_output(command, shell=True)
         # print('end')
     else:
-        print(spiderName + u' 还在抓取，跳过这轮start')
+        print(spider_name + u' 还在抓取，跳过这轮start')
 
 
 def similar_web():
-    startSpider('similar_web_loop')
+    start_spider('similar_web_loop')
 
 
 def start():
     # 当项目重新启动，清除所有状态
-    clearAllStatus()
+    clear_all_status()
 
     def add_job(func, timeSpace, delaySeconds=0):
         # 先马上开始执行

@@ -27,12 +27,12 @@ database.execute_sql("SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci;")
 
 
 # TODO...新增一个表的对象，就在此处添加一个键值对，指定数据库名称和类的对应关系
-def getTableByName(tableName):
+def get_table_by_name(table_name):
     Tables = {
         'similar_src': SimilarSrc,
         'similar_detail': SimilarDetail,
     }
-    return Tables[tableName]
+    return Tables[table_name]
 
 
 class UnknownField(object):

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import json
 import os
 
 import datetime
@@ -38,6 +39,32 @@ def check(spiderName):
         os.mkdir(filePath)
 
     return filePath + fileName
+
+
+def getLoopCache():
+    f = None
+    loop_cache = {
+        u'last': {
+            u'status': u'',
+            u'dir': u'',
+            u'time_start': u'',
+            u'time_complete': u''
+        },
+        u'new': {
+            u'status': u'',
+            u'dir': u'',
+            u'time_start': u'',
+            u'time_complete': u''
+        }
+    }
+    try:
+        with open(u'cache/loop_cache.json', u'r') as f:
+            loop_cache = json.load(f)
+    except Exception, e:
+        print str(e)
+    finally:
+        f and f.close()
+    return loop_cache
 
 
 def parse_before(file_path, hash_code):
@@ -614,20 +641,7 @@ def parse(html, hash_code):
 
 def start_before():
     # 得到状态，存储地址
-    loop_cache = {
-        u'last': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        },
-        u'new': {
-            u'status': u'',
-            u'dir': u'',
-            u'time_start': u'',
-            u'time_complete': u''
-        }
-    }
+    loop_cache = getLoopCache()
 
     last = loop_cache.get(u'last', {})
     new = loop_cache.get(u'new', {})

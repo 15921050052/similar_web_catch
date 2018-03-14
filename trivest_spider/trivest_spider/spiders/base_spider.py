@@ -5,121 +5,63 @@ import time
 
 import scrapy
 
-from StatusCache import saveSpiderStatus
-from trivest_data.dal import LogDao
-from util import FileUtil
-from util import NetworkUtil
-from util import TimerUtil
+from status_cache import save_spider_status
+from trivest_data.dal import log_dao
+from util import file_util
+from util import network_util
+from util import timer_util
 
 
 # 封装基础方法
 class BaseSpider(scrapy.Spider):
-    def afterClose(self):
+    def after_close(self):
         # 如果正在爬，就不请求
-        saveSpiderStatus(self.name, u'stop')
-        self.logInfo(u'抓取结束-----------------' + self.name)
+        save_spider_status(self.name, u'stop')
+        self.log_info(u'抓取结束-----------------' + self.name)
 
-    def beforeRequest(self):
+    def before_request(self):
         # 如果正在爬，就不请求
-        saveSpiderStatus(self.name, u'running')
+        save_spider_status(self.name, u'running')
 
-    def logInfo(self, msg, belong_to='', saveInDB=False):
+    def log_info(self, msg, belong_to='', save_in_db=False):
         belong_to = belong_to or self.name
-        LogDao.info(msg, belong_to=belong_to, saveInDB=saveInDB)
+        log_dao.info(msg, belong_to=belong_to, save_in_db=save_in_db)
 
-    def logWarn(self, msg, belong_to='', saveInDB=False):
+    def log_warn(self, msg, belong_to='', save_in_db=False):
         belong_to = belong_to or self.name
-        LogDao.warn(msg, belong_to=belong_to, saveInDB=saveInDB)
+        log_dao.warn(msg, belong_to=belong_to, save_in_db=save_in_db)
 
     def wait_utils_env_ok(self):
         # 检测网络
-        while not NetworkUtil.checkNetWork():
+        while not network_util.check_net_work():
             # 20s检测一次
-            TimerUtil.sleep(20)
-            self.logWarn(u'检测网络不可行')
+            timer_util.sleep(20)
+            self.log_warn(u'检测网络不可行')
             # continue
 
         # 检测服务器
-        while not NetworkUtil.checkService():
+        while not network_util.check_service():
             # 20s检测一次
-            TimerUtil.sleep(20)
-            self.logWarn(u'检测服务器不可行')
+            timer_util.sleep(20)
+            self.log_warn(u'检测服务器不可行')
             # continue
         return True
 
-    def dateFormat(self, dateStr='', targetFormat=''):
-        if not dateStr:
-            return ''
-        dateStr = dateStr \
-            .replace('\r\n', '') \
-            .replace('\n', '') \
-            .strip(' ') \
-            .replace(u'年', '-') \
-            .replace(u'月', '-') \
-            .replace(u'日', ' ')
-        needFormats = [
-            u'%Y-%m-%d',
-            u'%Y/%m/%d',
-            u'%m/%d/%Y',
-            u'%Y.%m.%d',
-            u'%m/%d/%Y %H:%M:%S',
-            u'%Y-%m-%d %H:%M',
-            u'%Y-%m-%d %H:%M:%S',
-            u'%Y/%m/%d %H:%M',
-            u'%Y/%m/%d %H:%M:%S',
-            u'%Y.%m.%d %H:%M:%S'
-        ]
-        targetFormat = targetFormat or u'%Y-%m-%d %H:%M:%S'
-        for needFormat in needFormats:
-            try:
-                result = time.strftime(targetFormat, time.strptime(dateStr, needFormat))
-                self.logInfo(u'匹配时间成功：' + result)
-                return result
-            except Exception as e:
-                print str(e)
-                continue
-        return u''
+    def save_html_file(self, dir, hash_code, content):
+        code, msg, data = file_util.save_txt_file('html/'+dir, hash_code+'.html', content)
+        if code == 200:
+            self.log_info(u'Saved file %s' % data)
+        else:
+            self.log_warn(u'Saved file %s fail' % data)
 
-    def saveFile(self, hash_code, content):
-        f = None
-        try:
-            if not FileUtil.dirIsExist(u'html'):
-                FileUtil.createDir(u'html')
-            filename = u'html/%s.html' % hash_code
-            with open(filename, u'wb') as f:
-                f.write(content.encode(u"utf8"))
-            self.log(u'Saved file %s' % filename)
-            self.logInfo(u'保存成功')
-        finally:
-            f and f.close()
+    def save_loop_cache_file(self, loop_cache):
+        code, msg, data = file_util.save_json_file('cache', 'loop_cache.json', loop_cache)
+        if code == 200:
+            self.log_info(u'Saved file %s' % data)
+        else:
+            self.log_warn(u'Saved file %s fail' % data)
 
-    def saveHtmlFile(self, dir, hash_code, content):
-        f = None
-        try:
-            if not FileUtil.dirIsExist(u'html/%s' % dir):
-                FileUtil.createDir(u'html/%s' % dir)
-            filename = u'html/%s/%s.html' % (dir, hash_code)
-            with open(filename, u'wb') as f:
-                f.write(content.encode(u"utf8"))
-            self.log(u'Saved file %s' % filename)
-            self.logInfo(u'保存成功')
-        finally:
-            f and f.close()
-
-    def saveLoopCacheFile(self, loop_cache):
-        f = None
-        try:
-            if not FileUtil.dirIsExist(u'cache'):
-                FileUtil.createDir(u'cache')
-            filename = u'cache/loop_cache.json'
-            with open(filename, u'w') as f:
-                json.dump(loop_cache, f)
-            self.log(u'Saved file %s' % filename)
-            self.logInfo(u'保存loop_cache.json成功')
-        finally:
-            f and f.close()
-
-    def getLoopCache(self):
+    def get_loop_cache(self):
         f = None
         loop_cache = {
             u'last': {
@@ -135,40 +77,10 @@ class BaseSpider(scrapy.Spider):
                 u'time_complete': u''
             }
         }
-        try:
-            self.logInfo(str(os.path.exists(u'cache/loop_cache.json')))
-            with open(u'cache/loop_cache.json', u'r') as f:
-                loop_cache = json.load(f)
-                self.logInfo(str(loop_cache))
-        except Exception, e:
-            self.logInfo(u''+e.message)
-        finally:
-            f and f.close()
-        return loop_cache
+        code, msg, data = file_util.read_json_file(u'cache/loop_cache.json')
+        if code == 200:
+            return data
+        else:
+            self.log_info(msg)
+            return loop_cache
 
-    def checkFileExist(self, hash_code):
-        return os.path.exists(u'html/%s.html' % hash_code)
-
-    def get_all_file_path(self, path):
-        path_list = []
-        for file in os.listdir(path):
-            file_path = os.path.join(path, file)
-            # print ''.join(os.path.splitext(file))
-            file_name = os.path.splitext(file)[0]
-            file_name_all = ''.join(os.path.splitext(file))
-            if os.path.isdir(file_path):
-                self.get_all_file_path(file_path)
-            else:
-                path_list.append([file_path, file_name, file_name_all])
-        return path_list
-
-    def get_all_file_name(self, path):
-        name_list = []
-        for file in os.listdir(path):
-            file_path = os.path.join(path, file)
-            file_name = os.path.splitext(file)[0]
-            if os.path.isdir(file_path):
-                self.get_all_file_path(file_path)
-            else:
-                name_list.append(file_name)
-        return name_list
