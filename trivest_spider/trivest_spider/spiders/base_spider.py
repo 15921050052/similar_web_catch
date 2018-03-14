@@ -48,6 +48,7 @@ class BaseSpider(scrapy.Spider):
         return True
 
     def save_html_file(self, dir, hash_code, content):
+        file_util.create_dir('html')
         code, msg, data = file_util.save_txt_file('html/'+dir, hash_code+'.html', content)
         if code == 200:
             self.log_info(u'Saved file %s' % data)

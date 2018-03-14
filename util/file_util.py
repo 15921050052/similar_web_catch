@@ -82,7 +82,7 @@ def read_file(file_path):
     msg = u'没有读取到文件内容'
     try:
         with open(file_path, u'r') as f:
-            return -200, u'成功读取', f.read()
+            return 200, u'成功读取', f.read()
     except Exception, e:
         msg = str(e)
     finally:
@@ -95,7 +95,7 @@ def read_json_file(file_path):
     msg = u'没有读取到文件内容'
     try:
         with open(file_path, u'r') as f:
-            return -200, u'成功读取', json.load(f)
+            return 200, u'成功读取', json.load(f)
     except Exception, e:
         msg = str(e)
     finally:
@@ -118,6 +118,7 @@ def save_txt_file(dir, file_name, txt):
         msg = str(e)
     finally:
         f and f.close()
+    print msg
     return -100, msg, data
 
 
